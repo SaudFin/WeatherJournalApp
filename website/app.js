@@ -27,8 +27,7 @@ const postLocation = async (url = "", data = {}) => {
 
   try {
     console.log(res);
-    const newData = await res;
-    // const newData = await res.json();
+    const newData = await res.json();
     console.log(newData);
     return newData;
   } catch (err) {
@@ -36,14 +35,27 @@ const postLocation = async (url = "", data = {}) => {
   }
 };
 
+// async Updating element in the page
+const updatePage = async () => {
+  const req = await fetch("/recent");
+  try {
+    const displayRecent = await req.json();
+    // console.log(displayRecent.temp);
+    document.getElementById("date").innerHTML = displayRecent.date;
+    document.getElementById("temp").innerHTML = displayRecent.temp;
+    document.getElementById("content").innerHTML = displayRecent.userResponse;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 generate.addEventListener("click", () => {
   let zipCode = document.getElementById("zip").value;
   getWeather(baseURL, zipCode, apiKey).then(function(data) {
-    // console.log(data);
     postLocation("/add", {
       temperature: data.main.temp,
       date: newDate,
       userResponse: document.getElementById("feelings").value
-    });
+    }).then(updatePage());
   });
 });

@@ -23,7 +23,7 @@ app.use(express.static("website"));
 // Routes
 
 // GET Route
-app.get("/", function(req, res) {
+app.get("/recent", function(req, res) {
   res.send(projectData);
 });
 
